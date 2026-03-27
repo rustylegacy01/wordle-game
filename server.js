@@ -72,22 +72,33 @@ app.get('/api/word', (req, res) => {
 app.post('/api/guess', guessLimiter, (req, res) => {
     const { guess } = req.body;
     
+    console.log('Received guess request:', { guess, type: typeof guess, body: req.body });
+    
     if (!guess || typeof guess !== 'string') {
+        console.log('Rejecting: guess missing or wrong type');
         return res.status(400).json({ error: 'Guess is required' });
     }
     
     const cleanGuess = guess.toLowerCase().trim();
     
+    console.log('Cleaned guess:', cleanGuess, 'Length:', cleanGuess.length);
+    
     if (cleanGuess.length !== 5) {
+        console.log('Rejecting: wrong length');
         return res.status(400).json({ error: 'Guess must be 5 letters' });
     }
     
     if (!/^[a-z]+$/.test(cleanGuess)) {
+        console.log('Rejecting: invalid characters');
         return res.status(400).json({ error: 'Guess must contain only letters' });
     }
     
     // Check if word is valid
-    if (!isValidWord(cleanGuess)) {
+    const valid = isValidWord(cleanGuess);
+    console.log('Word valid:', valid, 'Word:', cleanGuess);
+    
+    if (!valid) {
+        console.log('Rejecting: not in word list');
         return res.status(400).json({ error: 'Not in word list' });
     }
     
