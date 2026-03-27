@@ -11,6 +11,12 @@ const db = require('./database');
 const app = express();
 const PORT = process.env.PORT || 9010;
 
+// Request logging for debugging
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
+
 // Security middleware
 app.use(helmet({
     contentSecurityPolicy: {
@@ -44,7 +50,17 @@ const scoreLimiter = rateLimit({
 });
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+    dotfiles: 'ignore',
+    etag: true,
+    extensions: ['html', 'css', 'js'],
+    index: false,
+    maxAge: '1d',
+    redirect: false,
+    setHeaders: function (res, path, stat) {
+        res.set('x-timestamp', Date.now());
+    }
+}));
 
 // Get today's word hash (for client-side validation consistency)
 app.get('/api/word', (req, res) => {
