@@ -1,0 +1,9 @@
+# Data Directory
+
+This directory contains the SQLite database for the leaderboard.
+
+Files:
+- leaderboard.db - SQLite database with player scores
+- .last-cleanup - Timestamp of last database cleanup
+
+Note: This directory is created automatically if it doesn't exist.
