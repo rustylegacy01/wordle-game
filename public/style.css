@@ -48,9 +48,10 @@ body {
 .game-container {
     width: 100%;
     max-width: 500px;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-bottom: 20px;
 }
 
 /* Header */
@@ -121,10 +122,10 @@ header h1 {
 .board-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     flex: 1;
-    padding: 10px;
-    overflow: hidden;
+    padding: 20px 10px;
+    min-height: 400px;
 }
 
 .board {

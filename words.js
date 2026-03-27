@@ -2,23 +2,42 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-// Load word lists
-const answersPath = path.join(__dirname, 'words', 'answers.json');
-const validPath = path.join(__dirname, 'words', 'valid.json');
+// Load word lists - check multiple possible locations
+function findWordsFile(filename) {
+    const possiblePaths = [
+        path.join(__dirname, 'words', filename),
+        path.join(process.cwd(), 'words', filename),
+        path.join(__dirname, '..', 'words', filename),
+    ];
+    
+    for (const p of possiblePaths) {
+        if (fs.existsSync(p)) {
+            return p;
+        }
+    }
+    return possiblePaths[0]; // Return default if not found
+}
+
+const answersPath = findWordsFile('answers.json');
+const validPath = findWordsFile('valid.json');
 
 let ANSWERS = [];
 let VALID_GUESSES = new Set();
 
 try {
+    console.log(`📂 Looking for words at: ${answersPath}`);
     ANSWERS = JSON.parse(fs.readFileSync(answersPath, 'utf8'));
     const validWords = JSON.parse(fs.readFileSync(validPath, 'utf8'));
     VALID_GUESSES = new Set([...validWords, ...ANSWERS]);
     console.log(`📚 Loaded ${ANSWERS.length} answer words and ${VALID_GUESSES.size} valid guesses`);
 } catch (err) {
-    console.error('Error loading word lists:', err);
+    console.error('❌ Error loading word lists:', err.message);
+    console.log('📂 Current directory:', process.cwd());
+    console.log('📂 __dirname:', __dirname);
     // Fallback minimal word list
-    ANSWERS = ['crane', 'slate', 'apple', 'beach', 'dance', 'eagle', 'flame', 'grape'];
+    ANSWERS = ['crane', 'slate', 'apple', 'beach', 'dance', 'eagle', 'flame', 'grape', 'house', 'image', 'judge', 'knife', 'lemon', 'money', 'night', 'ocean', 'paint', 'queen', 'radio', 'scale', 'table', 'uncle', 'voice', 'water', 'youth'];
     VALID_GUESSES = new Set(ANSWERS);
+    console.log(`⚠️ Using fallback word list with ${ANSWERS.length} words`);
 }
 
 // Epoch for daily word rotation (January 1, 2024)
