@@ -126,6 +126,19 @@ function getRandomWord() {
     return ANSWERS[index];
 }
 
+// Debug info
+function getDebugInfo() {
+    return {
+        answersPath,
+        validPath,
+        cwd: process.cwd(),
+        dirname: __dirname,
+        answersCount: ANSWERS.length,
+        validCount: VALID_GUESSES.size,
+        sampleWords: ANSWERS.slice(0, 5)
+    };
+}
+
 module.exports = {
     ANSWERS,
     VALID_GUESSES,
@@ -134,5 +147,6 @@ module.exports = {
     isValidWord,
     evaluateGuess,
     getRandomWord,
-    getDayNumber
+    getDayNumber,
+    getDebugInfo
 };

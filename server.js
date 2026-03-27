@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 require('dotenv').config();
 
-const { getDailyWord, getWordHash, isValidWord, evaluateGuess } = require('./words');
+const { getDailyWord, getWordHash, isValidWord, evaluateGuess, getDebugInfo } = require('./words');
 const db = require('./database');
 
 const app = express();
@@ -205,6 +205,11 @@ app.get('/api/health', (req, res) => {
         timestamp: new Date().toISOString(),
         uptime: process.uptime()
     });
+});
+
+// Debug endpoint - check word list status
+app.get('/api/debug', (req, res) => {
+    res.json(getDebugInfo());
 });
 
 // Serve index.html for all other routes (SPA support)
