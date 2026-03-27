@@ -241,6 +241,7 @@ class WordleGame {
         }
         
         const guess = this.getCurrentGuess();
+        console.log('Submitting guess:', guess, 'Length:', guess.length);
         
         // Hard mode validation
         if (this.hardMode && this.currentRow > 0) {
@@ -261,6 +262,7 @@ class WordleGame {
             });
             
             const data = await response.json();
+            console.log('Response:', data);
             
             if (!response.ok) {
                 this.shakeRow();
