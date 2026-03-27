@@ -9,7 +9,7 @@ const { getDailyWord, getWordHash, isValidWord, evaluateGuess } = require('./wor
 const db = require('./database');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 9010;
 
 // Security middleware
 app.use(helmet({
